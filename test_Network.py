@@ -2,8 +2,6 @@ import unittest
 from unittest import TestCase
 
 from Network import ClassfulNetwork, ClasslessNetwork
-from faker import Faker
-
 from Subnetmask import SubnetMask
 
 CLASSFUL_NETWORKS = {

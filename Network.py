@@ -2,6 +2,7 @@ from Subnetmask import SubnetMask
 
 
 class Network:
+    valid = False
 
     def __init__(self, network_bits, subnet_mask: SubnetMask, ip: str):
         self.subnet_mask = subnet_mask
@@ -13,6 +14,7 @@ class Network:
         self.number_of_usable_ip_adr = self.number_of_ip_adr_per_network - 2
         self.first_ip = self.calculate_first_ip_adr()
         self.last_ip = self.calculate_lasts_ip_adr()
+        self.valid = True
 
 
     def split_into_equal_sized_subnets(self, required_subnet_size: int):
@@ -37,14 +39,14 @@ class Network:
         octet_num, max_num_bits = self.__get_subnet_octet(
             suffix=required_subnet_size)
         block_size = pow(2, (max_num_bits - required_subnet_size))
-        subnets = []
+        self.subnets = []
         ip = self.first_ip.split('.')
         origial_octet_val = int(ip[octet_num])
         for idx in range(num_of_possible_subnets):
             ip[octet_num] = str(origial_octet_val + idx * block_size)
-            subnets.append(f'{".".join(ip)}/{required_subnet_size}')
+            self.subnets.append(f'{".".join(ip)}/{required_subnet_size}')
 
-        return subnets
+        return self.subnets
 
     def __get_subnet_octet(self, suffix):
         """

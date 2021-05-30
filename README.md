@@ -11,7 +11,7 @@ following question:
    subnet as well as the total number of available IP-Addresses.
 
 ###Requirements:
-TODO
+Written in Python 3.8 but not limited to this runtime.
 
 
 ###How to run:
@@ -39,13 +39,15 @@ pip install -r requirements.txt
 python main.py
 ```
 
-### Input
-TODO
-
-### Output
-
-TODO
-
+### Usage
+```
+Welcome to the subnet calculator!
+Please enter and IP address and an network prefix (e.g. 174.53.4.0/24)
+>> 174.53.4.0/24
+Please enter required subnet size ( 0 < int < 32).
+>> 27
+['174.53.4.0/27', '174.53.4.32/27', '174.53.4.64/27', '174.53.4.96/27', '174.53.4.128/27', '174.53.4.160/27', '174.53.4.192/27', '174.53.4.224/27']
+```
 
 ###Sources:
  - https://www.ittsystems.com/introduction-to-subnetting/

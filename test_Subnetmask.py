@@ -1,4 +1,5 @@
 import unittest
+
 import Subnetmask
 
 SUBNET_MASKS_GOOD = [Subnetmask.SubnetMask('255.0.0.0'),

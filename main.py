@@ -1,10 +1,7 @@
 from Network import ClassfulNetwork, ClasslessNetwork
-from faker import Faker
 
 from Subnetmask import SubnetMask
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 CLASSFUL_NETWORKS = {
     "class_a": ClassfulNetwork(subnet_mask=SubnetMask('255.0.0.0'),
@@ -18,50 +15,50 @@ CLASSFUL_NETWORKS = {
                                ip='192.0.0.0')
 }
 
-# Press the green button in the gutter to run the script.
+
+def prompt_user_for_ip_and_range():
+    """
+    Prompt user for input IP and network bits.
+
+    :return: Network: Object representing the given network.
+    """
+    print('Welcome to the subnet calculator!')
+
+    network = ClasslessNetwork(cidr='174.53.4.0/24')
+    network.valid = False
+    while not network.valid:
+        print('Please enter and IP address and an network prefix (e.g. '
+              '174.53.4.0/24)')
+        cidr = str(input())
+        network = ClasslessNetwork(cidr=cidr)
+        if not network.valid:
+            print("IP address was not valid!")
+
+    return network
+
+
+def ask_user_for_required_subnet_size():
+    """
+    Propmt users for desired size of subnets they want to create.
+
+    :return: int: Disred subnet address range as integer
+    """
+    range_ok = False
+    while not range_ok:
+        print('Please enter required subnet size ( 0 < int < 32).')
+        required_subnet_size = int(input())
+        if 0 < required_subnet_size < 32:
+            return required_subnet_size
+        else:
+            print("Please provide integer between 0 and 32 !")
+
+
 if __name__ == '__main__':
-    faker = Faker()
-    ip = faker.ipv4()
-    ip = '10.0.0.0'
-    suffix = '20'
-    cidr = f'{ip}/{suffix}'
 
-    network = ClassfulNetwork(SubnetMask('255.255.255.0'),
-                              num_of_networks=2097152,
-                              ip=ip)
-    print(network.__dict__)
-    network = ClasslessNetwork(cidr=cidr)
-    print(network.__dict__)
+    network = prompt_user_for_ip_and_range()
+    required_subnet_size = ask_user_for_required_subnet_size()
+    network.split_into_equal_sized_subnets(
+        required_subnet_size=required_subnet_size
+    )
+    print(network.subnets)
 
-
-    ip = '174.53.4.0'
-    suffix = '24'
-    cidr = f'{ip}/{suffix}'
-    network = ClasslessNetwork(cidr=cidr)
-    print(network.__dict__)
-    subnets = network.split_into_equal_sized_subnets(required_subnet_size=27)
-    for elem in subnets:
-        print(elem)
-
-    ip = '141.67.128.0'
-    suffix = '21'
-    cidr = f'{ip}/{suffix}'
-    network = ClasslessNetwork(cidr=cidr)
-    print(network.__dict__)
-    subnets = network.split_into_equal_sized_subnets(required_subnet_size=23)
-    for elem in subnets:
-        print(elem)
-    # print(CLASSFUL_NETWORKS['class_c'].calculate_start_ip_adr())
-    # print('Welcome to the subnet calculator!')
-    # subnet_mask = SubnetMask('0.0.0.0')
-    # while not subnet_mask.valid():
-    #     print('Enter subnet mask in dot-format(e.g.:255.0.0.0). Allowed octet values are "0" or "255":')
-    #     subnet_mask = SubnetMask(str(input()))
-    #     if not subnet_mask.valid():
-    #         print("Subnet mask was not valid!")
-    #
-    # print(subnet_mask)
-    #
-    #
-    #
-    # num_subnets = 1
