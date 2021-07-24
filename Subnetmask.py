@@ -4,7 +4,7 @@ from typing import List
 class SubnetMask:
     def __init__(self, mask: str):
         self.mask = mask
-        self.octets = mask.split('.')
+        self.octets = mask.split(".")
 
     def check_octet_length(self) -> bool:
         return True if len(self.octets) == 4 else False
@@ -20,7 +20,7 @@ class SubnetMask:
         return all(tmp)
 
     def valid(self) -> bool:
-        if self.mask == '0.0.0.0':
+        if self.mask == "0.0.0.0":
             return False
         tmp = [self.check_octet_length(), self.check_octet_values()]
 
@@ -44,9 +44,6 @@ class SubnetMask:
         return sum(tmp)
 
 
-
-
-if __name__ == '__main__':
-    mask = SubnetMask('0.0.0.0')
+if __name__ == "__main__":
+    mask = SubnetMask("0.0.0.0")
     print(mask.valid())
-

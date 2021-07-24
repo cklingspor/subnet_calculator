@@ -16,7 +16,6 @@ class Network:
         self.last_ip = self.calculate_lasts_ip_adr()
         self.valid = True
 
-
     def split_into_equal_sized_subnets(self, required_subnet_size: int):
         """
         Split the Network into multiple subnets. Solves this question:
@@ -34,13 +33,15 @@ class Network:
         :param required_subnet_size: Equal to required_subnet_size
         :return: subnets: list : List of subnet ranges
         """
-        num_of_possible_subnets = pow(2, (required_subnet_size -
-                                          self.network_bits))
+        num_of_possible_subnets = pow(
+            2, (required_subnet_size - self.network_bits)
+        )
         octet_num, max_num_bits = self.__get_subnet_octet(
-            suffix=required_subnet_size)
+            suffix=required_subnet_size
+        )
         block_size = pow(2, (max_num_bits - required_subnet_size))
         self.subnets = []
-        ip = self.first_ip.split('.')
+        ip = self.first_ip.split(".")
         origial_octet_val = int(ip[octet_num])
         for idx in range(num_of_possible_subnets):
             ip[octet_num] = str(origial_octet_val + idx * block_size)
@@ -66,34 +67,36 @@ class Network:
         elif 24 <= suffix <= 32:
             return 3, 32
         else:
-            raise ValueError('Suffix was not in range 0-32')
-
+            raise ValueError("Suffix was not in range 0-32")
 
     def calculate_first_ip_adr(self):
         """Calculate bitwise AND between IP and subnet mask."""
         tmp = []
-        for octet_ip, octet_mask in zip(self.ip.split('.'),
-                                        self.subnet_mask.octets):
+        for octet_ip, octet_mask in zip(
+            self.ip.split("."), self.subnet_mask.octets
+        ):
             num = int(octet_ip) & int(octet_mask)
             tmp.append(str(num))
 
-        return '.'.join(tmp)
+        return ".".join(tmp)
 
     def calculate_lasts_ip_adr(self):
         """Calculate the last IP address by adding the bitwise binary
         inverse of the subnet mask to the first IP address."""
         ip = self.first_ip
         tmp = []
-        for octet_ip, octet_mask in zip(ip.split('.'), self.subnet_mask.octets):
-            a = f'{int(octet_ip):08b}'
-            b = self.__invert_binary_number(f'{int(octet_mask):08b}')
+        for octet_ip, octet_mask in zip(
+            ip.split("."), self.subnet_mask.octets
+        ):
+            a = f"{int(octet_ip):08b}"
+            b = self.__invert_binary_number(f"{int(octet_mask):08b}")
             tmp.append(str(int(a, 2) + int(b, 2)))
 
-        return '.'.join(tmp)
+        return ".".join(tmp)
 
     def __invert_binary_number(self, num: str):
-        b_dict = {'0': '1', '1': '0'}
-        inverse = ''
+        b_dict = {"0": "1", "1": "0"}
+        inverse = ""
         for bit in num:
             inverse += b_dict[bit]
         return inverse
@@ -102,35 +105,39 @@ class Network:
 class ClassfulNetwork(Network):
     def __init__(self, subnet_mask: SubnetMask, num_of_networks: int, ip: str):
         self.number_of_networks = num_of_networks
-        super().__init__(network_bits=subnet_mask.get_mask_suffix(),
-                         subnet_mask=subnet_mask,
-                         ip=ip)
+        super().__init__(
+            network_bits=subnet_mask.get_mask_suffix(),
+            subnet_mask=subnet_mask,
+            ip=ip,
+        )
 
 
 class ClasslessNetwork(Network):
-
     def __init__(self, cidr):
-        network_bits = int(cidr.split('/')[-1])
-        ip = cidr.split('/')[0]
-        super().__init__(network_bits=network_bits,
-                         subnet_mask=SubnetMask(self.calculate_subnet_mask(
-                             network_bits=network_bits)),
-                         ip=ip)
+        network_bits = int(cidr.split("/")[-1])
+        ip = cidr.split("/")[0]
+        super().__init__(
+            network_bits=network_bits,
+            subnet_mask=SubnetMask(
+                self.calculate_subnet_mask(network_bits=network_bits)
+            ),
+            ip=ip,
+        )
 
     def calculate_subnet_mask(self, network_bits):
-        subnet_mask = '1' * network_bits + '0' * (32 - network_bits)
+        subnet_mask = "1" * network_bits + "0" * (32 - network_bits)
         subnet_mask = self.split_string_into_octets(string=subnet_mask)
-        subnet_mask = [str(self.convert_bin_2_decimal(string=x)) for x in \
-                       subnet_mask]
-        return '.'.join(subnet_mask)
+        subnet_mask = [
+            str(self.convert_bin_2_decimal(string=x)) for x in subnet_mask
+        ]
+        return ".".join(subnet_mask)
 
     def split_string_into_octets(self, string):
         tmp = []
         for i in range(0, len(string), 8):
-            tmp.append(string[i:i + 8])
+            tmp.append(string[i : i + 8])
 
         return tmp
 
     def convert_bin_2_decimal(self, string: str):
         return int(string, 2)
-

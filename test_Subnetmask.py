@@ -2,11 +2,14 @@ import unittest
 
 import Subnetmask
 
-SUBNET_MASKS_GOOD = [Subnetmask.SubnetMask('255.0.0.0'),
-                Subnetmask.SubnetMask('255.255.0.0')]
+SUBNET_MASKS_GOOD = [
+    Subnetmask.SubnetMask("255.0.0.0"),
+    Subnetmask.SubnetMask("255.255.0.0"),
+]
 
-SUBNET_MASKS_MALFORMED = [Subnetmask.SubnetMask('256.0.0'),
-                Subnetmask.SubnetMask('-1.0.0')
+SUBNET_MASKS_MALFORMED = [
+    Subnetmask.SubnetMask("256.0.0"),
+    Subnetmask.SubnetMask("-1.0.0"),
 ]
 
 
@@ -36,8 +39,8 @@ class TestSubnetMask(unittest.TestCase):
         for mask in SUBNET_MASKS_MALFORMED:
             self.assertFalse(mask.valid())
 
-        self.assertFalse(Subnetmask.SubnetMask('0.0.0.0').valid())
+        self.assertFalse(Subnetmask.SubnetMask("0.0.0.0").valid())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
