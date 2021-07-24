@@ -168,3 +168,4 @@ TODO
  - https://subnettingpractice.com/vlsm.html
  - https://www.baeldung.com/cs/get-ip-range-from-subnet-mask
  - https://erikberg.com/notes/networks.html
+ - https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/
