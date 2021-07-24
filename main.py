@@ -27,7 +27,7 @@ def prompt_user_for_ip_and_range():
     network = ClasslessNetwork(cidr='174.53.4.0/24')
     network.valid = False
     while not network.valid:
-        print('Please enter and IP address and an network prefix (e.g. '
+        print('Please enter and IP address and number of network bits (e.g. '
               '174.53.4.0/24)')
         cidr = str(input())
         network = ClasslessNetwork(cidr=cidr)
@@ -45,7 +45,7 @@ def ask_user_for_required_subnet_size():
     """
     range_ok = False
     while not range_ok:
-        print('Please enter required subnet size ( 0 < int < 32).')
+        print('Please enter required subnet size ( network bits < int < 32).')
         required_subnet_size = int(input())
         if 0 < required_subnet_size < 32:
             return required_subnet_size
